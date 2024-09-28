@@ -1,8 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
+from  list_of_categories import send_category_list
+
+books_categ = send_category_list()
+
+print("Welcome to the category page. here you have the list of the categories that you can choose")
+
+
+type_cat = books_categ[5].lower().replace(' ','-') + f"_{6}"
+
+
+print(type_cat)
 
 # geting all the books urls
-url_category = "http://books.toscrape.com/catalogue/category/books/mystery_3/"
+url_category = f"http://books.toscrape.com/catalogue/category/books/mystery_3/"
 category_url_list = [url_category + "index.html"]
 request_url_main = requests.get(category_url_list[0])
 
