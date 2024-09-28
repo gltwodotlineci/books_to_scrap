@@ -11,13 +11,13 @@ def send_category_list():
         bs_ul = BeautifulSoup(response.text, 'html.parser')
         nav_list = bs_ul.find('ul', class_='nav nav-list').ul.find_all('a')
         
-        categ_dict = {}
+        categ_list = []
         for i,ls in enumerate(nav_list):
             l = re.sub(r'\n\s*\n', r'\n\n', ls.get_text().strip(), flags=re.M)
-            categ_dict[i+1] = l#.lower().replace(' ','-') + f"_{i+1}"
+            categ_list.append({"Name Category": l})
 
     
-        return categ_dict
+        return categ_list
     
     return f"Error, please check if there is something wrong with your url! "
 

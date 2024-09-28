@@ -5,12 +5,16 @@ from  list_of_categories import send_category_list
 books_categ = send_category_list()
 
 print("Welcome to the category page. here you have the list of the categories that you can choose")
+print(f"You have the numbe of the category that you want to scrap")
+for i, book_categ in enumerate(books_categ):
+    print(f"{i+1} -- {book_categ['Name Category']}")
+
+print("Chouse the number of your category!")
+cat_number = input()
 
 
-type_cat = books_categ[5].lower().replace(' ','-') + f"_{6}"
+# type_cat = books_categ[books_categ[int(cat_number)+1]].lower().replace(' ','-') + f"_{int(cat_number)+2}"
 
-
-print(type_cat)
 
 # geting all the books urls
 url_category = f"http://books.toscrape.com/catalogue/category/books/mystery_3/"
