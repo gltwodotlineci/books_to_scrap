@@ -12,12 +12,10 @@ for i, book_categ in enumerate(books_categ):
 print("Chouse the number of your category!")
 cat_number = input()
 
-
-# type_cat = books_categ[books_categ[int(cat_number)+1]].lower().replace(' ','-') + f"_{int(cat_number)+2}"
-
+type_cat = books_categ[int(cat_number)-1]['Name Category'].lower().replace(' ','-')+ f"_{int(cat_number)+1}"
 
 # geting all the books urls
-url_category = f"http://books.toscrape.com/catalogue/category/books/mystery_3/"
+url_category = f"http://books.toscrape.com/catalogue/category/books/{type_cat}/"
 category_url_list = [url_category + "index.html"]
 request_url_main = requests.get(category_url_list[0])
 
@@ -40,7 +38,6 @@ while next_pages != '':
 
     i = i+1
     
-print("Next page is: ", category_url_list)
 print("Number of category pages: ", i)
 
 
