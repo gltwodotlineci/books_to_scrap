@@ -9,7 +9,7 @@ script Python qui visite cette page et en extrait les informations suivantes :"
 - price_excluding_tax "Ch"
 - number_available "Ch"
 - product_description "Ch"
-- category 
+- category "Ch"
 - review_rating "Ch"
 - image_url "Ch"
 
