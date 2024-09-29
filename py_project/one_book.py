@@ -2,9 +2,13 @@ import requests, sys
 from bs4 import BeautifulSoup
 
 
-def scrap_one_book():
-    print("Entrez le lien de la page: ")
-    url = input()
+def scrap_one_book(given_url=None):
+    
+    if given_url != None:
+        url = given_url
+    else:
+        print("Entrez le lien de la page: ")
+        url = input()
 
     try:
         response = requests.get(url)
