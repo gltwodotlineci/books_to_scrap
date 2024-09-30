@@ -1,33 +1,14 @@
-import requests, sys
-from bs4 import BeautifulSoup
 from one_book import scrap_one_book
 from category import send_list_books
+from all_books import send_all_books_scraped
 
-
-def create_csv_1_book():
-    dt_1_book = scrap_one_book()
-
-    with open('book.csv', 'w') as file:
-        file.write(
-            "Url"+','+'UPC'+','+'Title'+','+'Price including tax'+','
-            +'Price excluding tax'+','+'Category'+','+'Review rating'+','+'Image Url \n'
-            f"{dt_1_book['url']}" + ','+
-            dt_1_book['upc']+','+
-            dt_1_book['title']+','+
-            dt_1_book['price_including_tax']+','+
-            dt_1_book['price_excluding_tax']+','+
-            dt_1_book['category']+','+
-            dt_1_book['review_rating']+','+
-            dt_1_book['image_url']
-        )
-
-# Creating a file for writing all the books of the category
-def create_csv_books_category():
-    with open('books_category.csv', 'w') as category_file:
+# Function that will create the csv based on the case           
+def create_csv(name_csv,list_books):
+    with open(f'{name_csv}.csv', 'w') as category_file:
         category_file.write("Url"+','+'UPC'+','+'Title'+','+'Price including tax'+','
             +'Price excluding tax'+','+'Category'+','+'Review rating'+','+'Image Url \n')
         # Using loop to select all the books
-        for book_obj in send_list_books():
+        for book_obj in list_books:
             category_file.write(
             f"{book_obj['url']}" + ','+
             book_obj['upc']+','+
@@ -38,3 +19,12 @@ def create_csv_books_category():
             book_obj['review_rating']+','+
             book_obj['image_url']+'\n'
         )
+
+# Creating csv for one book
+# create_csv('book', [scrap_one_book()])
+
+# Creating csv file for one category
+create_csv('books_category', send_list_books())
+
+# Creating csv file for all books
+# create_csv('all_books', send_all_books_scraped())

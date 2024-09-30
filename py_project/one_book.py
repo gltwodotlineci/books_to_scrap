@@ -28,7 +28,7 @@ def scrap_one_book(given_url=None):
     page_dt_dict = {'url': url}
 
     bs_body = BeautifulSoup(response.text, 'html.parser').find('body')
-
+   
     page_dt_dict['description'] = bs_body.find_all('p')[3].text
     page_dt_dict['title'] = bs_body.find('h1').text
     img_url = bs_body.find('img', alt=page_dt_dict['title']).get('src')

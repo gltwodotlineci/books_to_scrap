@@ -1,25 +1,39 @@
-import requests
+import requests, sys
 from bs4 import BeautifulSoup
 from  list_of_categories import send_category_list
 from one_book import scrap_one_book
 
-books_categ = send_category_list()
+# choosing the category
+def category_list():
+    books_categ = send_category_list()
+    print("Welcome to the category page. here you have the list of the categories that you can choose")
+    print(f"You have the numbe of the category that you want to scrap")
+    for i, book_categ in enumerate(books_categ):
+        print(f"{i+1} -- {book_categ['Name Category']}")
 
+    print("Choose the number of your category!")
+    categ_nb = input()
+    i = 1
+    while not int(categ_nb) in range(1,51):
+        if i > 2:
+            sys.exit("Please start over")
 
-print("Welcome to the category page. here you have the list of the categories that you can choose")
-print(f"You have the numbe of the category that you want to scrap")
-for i, book_categ in enumerate(books_categ):
-    print(f"{i+1} -- {book_categ['Name Category']}")
+        print("Please make sure your choose is between 1 to 50")
+        categ_nb = input()
+        i = i+1
 
-print("Chouse the number of your category!")
-cat_number = input()
+    return [categ_nb, books_categ]
 
 def send_categories():
-    type_cat = books_categ[int(cat_number)-1]['Name Category'].lower().replace(' ','-')+ f"_{int(cat_number)+1}"
+    categ_lst = category_list()
+    categ_nb = categ_lst[0]
+    books_list = categ_lst[1]
+    type_cat = books_list[int(categ_nb)-1]['Name Category'].lower().replace(' ','-')+ f"_{int(categ_nb)+1}"
 
     # geting all the books urls
     url_category = f"http://books.toscrape.com/catalogue/category/books/{type_cat}/"
     category_url_list = [url_category + "index.html"]
+    
     request_url_main = requests.get(category_url_list[0])
 
     bs_category = BeautifulSoup(request_url_main.text, 'html.parser')
@@ -46,18 +60,20 @@ def send_categories():
 # parsing from the categories page of the category
 def send_list_books():
     all_urls = []
-    base_url = "http://books.toscrape.com/catalogue"
+    base_url = "https://books.toscrape.com/catalogue"
     for categ_url in send_categories():
         # first we will create a list with the pages of each category    
         url_c = requests.get(categ_url)
         # we will sellect all the books url for each category page
+
         bs = BeautifulSoup(url_c.text, 'html.parser')
 
         # we will create a list of each book from each page of each category
         for href in bs.find_all('h3'):
             all_urls.append(base_url + href.select('a')[0].get('href')[8:])
 
-    list_books_category = []
+    
+    list_books_category = []   
     for url in all_urls:
         list_books_category.append(scrap_one_book(url))
 
