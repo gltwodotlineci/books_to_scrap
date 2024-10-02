@@ -10,11 +10,13 @@ def create_csv(name_csv,list_books):
     # creating field names from keys
     field_names = [x for x in list_books[0].keys()]
 
-    with open(f'{name_csv}.csv', 'w') as csv_file:
+    with open(f'{name_csv}.csv', 'w', encoding='utf-8') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
         for book_obj in list_books:
             writer.writerow(book_obj)
+
+            print("Price: ", book_obj['price_including_tax'])
 
 
 print("Here are three cases of parsing the books and saving their data to a csv file:")
