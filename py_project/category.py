@@ -58,7 +58,7 @@ def send_categories():
 
 
 # parsing from the categories page of the category
-def send_list_books():
+def send_list_books(get_image=False):
     all_urls = []
     base_url = "https://books.toscrape.com/catalogue"
     for categ_url in send_categories():
@@ -75,6 +75,6 @@ def send_list_books():
     
     list_books_category = []   
     for url in all_urls:
-        list_books_category.append(scrap_one_book(url))
+        list_books_category.append(scrap_one_book(url,get_image))
 
     return list_books_category
