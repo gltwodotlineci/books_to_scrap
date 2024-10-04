@@ -15,7 +15,6 @@ def create_csv(name_csv,list_books):
         for book_obj in list_books:
             writer.writerow(book_obj)
 
-            print("Price: ", book_obj['price_including_tax'])
 
 def validate_choice():
     print("Here are three cases of parsing the books and saving their data to a csv file:")
@@ -41,7 +40,7 @@ def download_image_book(category_or_one_book):
             img.write(book_img.content)
 
 # download_image_book([scrap_one_book(None,True)])
-download_image_book(send_list_books(True))
+# download_image_book(send_list_books(True))
 
 
 def choosing_type_download():
@@ -55,3 +54,6 @@ def choosing_type_download():
         case 'C':
             # Creating csv file for all books
             create_csv('all_books', send_all_books_scraped())
+
+
+choosing_type_download()
