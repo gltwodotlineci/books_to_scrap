@@ -53,7 +53,7 @@ def choosing_type_download():
             create_csv('books_category', send_list_books())
         case 'C':
             # Creating csv file for all books
-            create_csv('all_books', send_all_books_scraped())
+            create_csv('all_books', send_all_books_scraped(False))
 
 
 choosing_type_download()
