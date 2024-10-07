@@ -1,7 +1,6 @@
 import sys, csv
 from one_book import scrap_one_book
 from category import send_list_books
-from all_books import send_all_books_scraped
 
 
 # Function that will be used to create a csv doc in order of the
@@ -16,22 +15,6 @@ def create_csv(name_csv,list_books):
             writer.writerow(book_obj)
 
 
-def validate_choice():
-    print("Here are three cases of parsing the books and saving their data to a csv file:")
-    print("  A --- Parsing one book")
-    print("  B --- Parsing all the books of one category ")
-    print("  C --- Parsing all the books of every category")
-    print(" Please choose one of the cases A, B or C")
-    abc = input()
-    i = 1
-    while not abc in ['A','B','C']:
-        print(f"You choosed {abc}. Make sure your choice is A, B or C")
-        i +=1
-        abc = input()
-        if i > 2:
-            sys.exit("Too many errors please restart over again.")
-    return abc
-
 # downloading images of one book or different categories
 def download_image_book(category_or_one_book):
     one = 0 if len(category_or_one_book) == 1 else 1
@@ -39,21 +22,44 @@ def download_image_book(category_or_one_book):
         with open(f"img_book_{i+one}.jpg",'wb') as img:
             img.write(book_img.content)
 
-# download_image_book([scrap_one_book(None,True)])
-# download_image_book(send_list_books(True))
 
 
-def choosing_type_download():
-    match validate_choice():
-        case 'A':
-            # Creating csv for one book
-            create_csv('book', [scrap_one_book()])
-        case 'B':
-            # Creating csv file for one category
-            create_csv('books_category', send_list_books())
-        case 'C':
-            # Creating csv file for all books
-            create_csv('all_books', send_all_books_scraped(False))
+# Creating csv file data of one book or download
+# the image of one book
+def csv_or_img_1_book(url,image=None):
+    if not image:
+        create_csv('book', [scrap_one_book(url)])
+    else:
+        download_image_book([scrap_one_book(url, True)])
+        
+
+# Creating csv file or images for one choosed category
+def category_csv_or_images(image=None):
+    print("If you want to select all the books write a")
+    all = input("if not write anything else: ")
+    if all == 'a' or all == 'A':
+        all_books, name = True, 'all_books'
+    else:
+        all_books, name = False, "books_category"
+
+    if not image:
+        create_csv(name, send_list_books(all_books, False))
+    else:
+        download_image_book(send_list_books(all_books,True))
 
 
-choosing_type_download()
+if __name__ == "__main__":
+    if len(sys.argv) == 2:
+        func_name = sys.argv[1]
+        globals()[func_name]()
+    elif len(sys.argv) == 3:
+        func_name = sys.argv[1]
+        param1 = sys.argv[2]
+        globals()[func_name](param1)
+    elif len(sys.argv) == 4:
+        func_name = sys.argv[1]
+        param1 = sys.argv[2]
+        param2 = sys.argv[3]
+        globals()[func_name](param1,param2)
+    else:
+        sys.exit("Error, please start over!")

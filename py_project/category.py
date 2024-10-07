@@ -24,19 +24,19 @@ def category_list():
 
     return [categ_nb, books_categ]
 
-def send_categories():
-    all_categories = False
-    categ_lst = category_list()
-    categ_nb = categ_lst[0]
-    books_list = categ_lst[1]
-    type_cat = books_list[int(categ_nb)-1]['Name Category'].lower().replace(' ','-')+ f"_{int(categ_nb)+1}"
-
-    # geting all the books of a category urls
-    url_category = f"http://books.toscrape.com/catalogue/category/books/{type_cat}/"
+def send_categories(all_books):
     # url for the total of the books:
-    if categ_nb[0] == '0':
-        all_categories = True
+    if all_books:
         url_category = f"https://books.toscrape.com/catalogue/category/books_1/"
+    else:
+        categ_lst = category_list()
+        categ_nb = categ_lst[0]
+        books_list = categ_lst[1]
+        type_cat = books_list[int(categ_nb)-1]['Name Category'].lower().replace(' ','-')+ f"_{int(categ_nb)+1}"
+
+        # geting all the books of a category urls
+        url_category = f"http://books.toscrape.com/catalogue/category/books/{type_cat}/"
+    
     category_url_list = [url_category + "index.html"]
     request_url_main = requests.get(category_url_list[0])
 
@@ -58,24 +58,26 @@ def send_categories():
         next_pages = checking_next_pages(BeautifulSoup(request_url_main.text, 'html.parser'))
         i = i+1
 
-    return [category_url_list, all_categories]
+    return category_url_list
 
 
 # parsing from the categories page of the category
-def send_list_books(get_image=False):
+def send_list_books(all_books = False,get_image=False):
     all_urls = []
     base_url = "https://books.toscrape.com/catalogue"
-    categories_return = send_categories()
-    cut_page_url = 5 if categories_return[1] else 8
+    categories_return = send_categories(all_books)
+    cut_page_url = 5 if all_books else 8
 
 
-    for categ_url in categories_return[0]:
+    m = 1
+    for categ_url in categories_return:
         # first we will create a list with the pages of each category
         url_c = requests.get(categ_url)
         # we will sellect all the books url for each category page
-
         bs = BeautifulSoup(url_c.text, 'html.parser')
-
+        m =m+1
+        if m > 3:
+            break
         # we will create a list of each book from each page of each category
         for href in bs.find_all('h3'):
             all_urls.append(base_url + href.select('a')[0].get('href')[cut_page_url:])
