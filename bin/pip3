@@ -1,4 +1,4 @@
-#!/home/glen/Documents/OpenClassRoom/proj_2_scraping/scraping_books_repo/bin/python3
+#!/home/glen/Documents/OpenClassRoom/proj_2_scraping/scraping_books_repo/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

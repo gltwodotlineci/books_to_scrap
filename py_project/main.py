@@ -1,12 +1,12 @@
 import sys, csv
 from one_book import scrap_one_book
-from category import send_list_books
+from category import create_category_data
 
 
 # Function that will be used to create a csv doc in order of the
 def create_csv(name_csv,list_books):
     # creating field names from keys
-    field_names = [x for x in list_books[0].keys()]
+    field_names = [x for x in list_books[0]]
 
     with open(f'{name_csv}.csv', 'w', encoding='utf-8') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
@@ -16,6 +16,7 @@ def create_csv(name_csv,list_books):
 
 
 # downloading images of one book or different categories
+# faire deux fonctions séparé (download livre & download image)
 def download_image_book(category_or_one_book):
     one = 0 if len(category_or_one_book) == 1 else 1
     for i, book_img in enumerate(category_or_one_book):
@@ -35,17 +36,17 @@ def csv_or_img_1_book(url,image=None):
 
 # Creating csv file or images for one choosed category
 def category_csv_or_images(image=None):
-    print("If you want to select all the books write a")
-    all = input("if not write anything else: ")
+    print("If you want to select all the books press a")
+    all = input("if not press anything else: ")
     if all == 'a' or all == 'A':
         all_books, name = True, 'all_books'
     else:
         all_books, name = False, "books_category"
 
     if not image:
-        create_csv(name, send_list_books(all_books, False))
+        create_csv(name, create_category_data(False))
     else:
-        download_image_book(send_list_books(all_books,True))
+        download_image_book(create_category_data(True))
 
 
 if __name__ == "__main__":
