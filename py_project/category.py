@@ -4,7 +4,7 @@ from  list_of_categories import send_category_list
 from one_book import scrap_one_book
 
 # choosing the category
-def category_list():
+def choose_category():
     books_categ = send_category_list()
     print("Welcome to the category page. here you have the list of the categories that you can choose")
     print(f"You have the numbe of the category that you want to scrap")
@@ -24,10 +24,15 @@ def category_list():
     
     return categ_nb, books_categ[int(categ_nb)-1]
 
-def send_category_url():
-    categ_lst = category_list()
+def send_category_url(not_choosed_category):
+    if not not_choosed_category:
+        categ_lst = choose_category()
+    else:
+        categ_lst = not_choosed_category
+
     categ_nb = categ_lst[0]
     category_dictionary = categ_lst[1]
+
     type_cat = category_dictionary['Name Category'].lower().replace(' ','-')+ f"_{int(categ_nb)+1}"
 
     # geting all the books of a category urls
@@ -54,21 +59,19 @@ def send_category_url():
         next_pages = checking_next_pages(BeautifulSoup(request_url_main.text, 'html.parser'))
         i = i+1
 
-    return category_url_list
+    return category_url_list, category_dictionary['Name Category']
 
 
 # parsing from the categories page of the category
-def create_category_data(get_image=False):
-    all_urls = []
+def create_category_data(all_categories=None,get_image=False):
     base_url = "https://books.toscrape.com/catalogue"
-    categories_return = send_category_url()
-
+    returned_categ = send_category_url(all_categories)
     field_names = ['url','title','upc','price_including_tax','price_excluding_tax','category','review_rating','image_url','number_available','description']
-    with open('category.csv', 'w', encoding='utf-8') as csv_file:
+    with open(f'{returned_categ[1]}.csv', 'w', encoding='utf-8') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
 
-        for categ_url in categories_return:           
+        for categ_url in returned_categ[0]:
             # first we will create a list with the pages of each category
             url_c = requests.get(categ_url)
             # we will sellect all the books url for each category page
@@ -76,18 +79,8 @@ def create_category_data(get_image=False):
 
             # we will create a list of each book from each page of each category
             for href in bs.find_all('h3'):
-                # a eff
-                # all_urls.append(base_url + href.select('a')[0].get('href')[8:])
-
-                book_url = base_url + href.select('a')[0].get('href')[8:]
-               
+                book_url = base_url + href.select('a')[0].get('href')[8:]             
                 writer.writerow(scrap_one_book(book_url))
 
-    # a eff
-    return [scrap_one_book(x,get_image) for x in all_urls]
 
-create_category_data(False)
-
-# print(send_category_list()) 
-
-# send_category_url()
+# create_category_data(False,False)
