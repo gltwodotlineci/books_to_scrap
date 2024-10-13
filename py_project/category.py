@@ -66,10 +66,10 @@ def send_category_url(not_choosed_category):
 def create_category_data(all_categories=None,get_image=False):
     base_url = "https://books.toscrape.com/catalogue"
     returned_categ = send_category_url(all_categories)
-    field_names = ['url','title','upc','price_including_tax','price_excluding_tax','category','review_rating','image_url','number_available','description']
+
+    # field_names = ['url','title','upc','price_including_tax','price_excluding_tax','description','category','review_rating','image_url','number_available']
+    field_names = []
     with open(f'{returned_categ[1]}.csv', 'w', encoding='utf-8') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=field_names)
-        writer.writeheader()
 
         for categ_url in returned_categ[0]:
             # first we will create a list with the pages of each category
@@ -79,8 +79,11 @@ def create_category_data(all_categories=None,get_image=False):
 
             # we will create a list of each book from each page of each category
             for href in bs.find_all('h3'):
-                book_url = base_url + href.select('a')[0].get('href')[8:]             
-                writer.writerow(scrap_one_book(book_url))
-
-
-# create_category_data(False,False)
+                book_url = base_url + href.select('a')[0].get('href')[8:]
+                scraped_book = scrap_one_book(book_url)
+                # Creating headers only if the field_name is void
+                if field_names == []:
+                    field_names = [x for x in scraped_book]
+                    writer = csv.DictWriter(csv_file, fieldnames=field_names)
+                    writer.writeheader()
+                writer.writerow(scraped_book)

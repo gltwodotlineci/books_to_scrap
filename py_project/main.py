@@ -6,15 +6,14 @@ from list_of_categories import send_category_list
 
 
 # Function that will be used to create a csv doc in order of the
-def create_csv(name_csv,list_books):
+def create_csv(name_csv,book):
     # creating field names from keys
-    field_names = [x for x in list_books[0]]
+    field_names = [x for x in book]
 
     with open(f'{name_csv}.csv', 'w', encoding='utf-8') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
-        for book_obj in list_books:
-            writer.writerow(book_obj)
+        writer.writerow(book)
 
 
 # downloading images of one book or different categories
@@ -40,7 +39,7 @@ def onebook(url):
     the image of one book
     '''
     name_csv = url[37:-11]
-    create_csv(name_csv, [scrap_one_book(url)])
+    create_csv(name_csv, scrap_one_book(url))
 
 @cli.command()
 def createcategory():

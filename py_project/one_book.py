@@ -31,11 +31,11 @@ def scrap_one_book(given_url=None, get_image=False):
                     'upc':'',
                     'price_including_tax':'',
                     'price_excluding_tax':'',
+                    'description':'',
                     'category':'',
                     'review_rating':'',
                     'image_url':'',
                     'number_available':'',
-                    'description':''
                     } 
 
 
@@ -57,11 +57,11 @@ def scrap_one_book(given_url=None, get_image=False):
                       'upc':table_prices[0].td.text,
                     'price_including_tax':table_prices[3].td.text[1:],
                     'price_excluding_tax':table_prices[2].td.text[1:],
+                    'description':bs_body.find_all('p')[3].text,
                     'category':bredcrumb.find_all('li')[2].text.strip(),
                     'review_rating':table_prices[6].td.text,
                     'image_url':bs_body.find('img', alt=title).get('src'),
-                    'number_available':table_prices[5].td.text,
-                    'description':bs_body.find_all('p')[3].text
+                    'number_available':table_prices[5].td.text
                 })
 
     return page_dict
