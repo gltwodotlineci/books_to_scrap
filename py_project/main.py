@@ -10,7 +10,7 @@ def create_csv(name_csv,book):
     # creating field names from keys
     field_names = [x for x in book]
 
-    with open(f'{name_csv}.csv', 'w') as csv_file:
+    with open(f'data/one_book/{name_csv}.csv', 'w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
         writer.writerow(book)
@@ -38,14 +38,13 @@ def createcategory():
     Choosing one category and create csv file data
     from the choosen category
     '''
-    create_category_data()
+    create_category_data(None)
 
 
 @cli.command()
 def allcategories():
     for i, categ in enumerate(send_category_list()):
-        create_category_data((i+1,categ),False)
-
+        create_category_data((i+1,categ))
 
 
 if __name__ == "__main__":

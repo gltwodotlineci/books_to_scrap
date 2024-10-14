@@ -16,7 +16,7 @@ def valid_response(given_url):
     except Exception:
         sys.exit("Be carefull the domain name is wrong! Please restart from the begining.")
 
-def scrap_one_book(given_url=None, get_image=False):
+def scrap_one_book(given_url=None, category=False, all_categories=False):
     
     if given_url is not None:
         url = given_url
@@ -53,7 +53,12 @@ def scrap_one_book(given_url=None, get_image=False):
     # updating the imge
     img_path = bs_body.find('img', alt=title).get('src')[5:]
     img_name = title.replace(' ','_').lower()
-    with open(f"images/{img_name}.jpg",'wb') as img:
+    folder = "one_book/"
+    if category:
+        folder ="category/"
+    elif all_categories:
+        folder = "all_categories/"
+    with open(f"data/{folder}images/{img_name}.jpg",'wb') as img:
         book_img = requests.get('https://books.toscrape.com'+img_path)
         img.write(book_img.content)
 
