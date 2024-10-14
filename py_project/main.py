@@ -10,19 +10,10 @@ def create_csv(name_csv,book):
     # creating field names from keys
     field_names = [x for x in book]
 
-    with open(f'{name_csv}.csv', 'w', encoding='utf-8') as csv_file:
+    with open(f'{name_csv}.csv', 'w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
         writer.writerow(book)
-
-
-# downloading images of one book or different categories
-# faire deux fonctions séparé (download livre & download image)
-def download_image_book(category_or_one_book):
-    one = 0 if len(category_or_one_book) == 1 else 1
-    for i, book_img in enumerate(category_or_one_book):
-        with open(f"img_book_{i+one}.jpg",'wb') as img:
-            img.write(book_img.content)
 
 
 # Creaing a click regroupment decorator for all the methods

@@ -1,6 +1,14 @@
 import requests, sys, csv
 from bs4 import BeautifulSoup
 
+def fix_encoding(str):
+    '''
+    Because of the meta charset of html, we might have a problem with accented
+    characters. we will change it by using encoede ISO and decode utf
+    '''
+    return bytes(str, encoding="ISO-8859-1").decode('utf-8')
+
+
 # Validatin the url
 def valid_response(given_url):
     try:
@@ -24,7 +32,6 @@ def scrap_one_book(given_url=None, get_image=False):
         url = input()
         response = valid_response(url)
 
-    
 
     page_dict = {'url': url,
                     'title':'',
@@ -46,7 +53,7 @@ def scrap_one_book(given_url=None, get_image=False):
     # updating the imge
     img_path = bs_body.find('img', alt=title).get('src')[5:]
     img_name = title.replace(' ','_').lower()
-    with open(f"{img_name}.jpg",'wb') as img:
+    with open(f"images/{img_name}.jpg",'wb') as img:
         book_img = requests.get('https://books.toscrape.com'+img_path)
         img.write(book_img.content)
 
@@ -54,15 +61,16 @@ def scrap_one_book(given_url=None, get_image=False):
     # Category
     bredcrumb = bs_body.find("ul")
 
-    page_dict.update({'title':title,
-                      'upc':table_prices[0].td.text,
-                    'price_including_tax':table_prices[3].td.text[1:],
-                    'price_excluding_tax':table_prices[2].td.text[1:],
-                    'description':bs_body.find_all('p')[3].text,
-                    'category':bredcrumb.find_all('li')[2].text.strip(),
-                    'review_rating':table_prices[6].td.text,
-                    'image_url':bs_body.find('img', alt=title).get('src'),
-                    'number_available':table_prices[5].td.text
+    page_dict.update({  'title':title,
+                        'upc':table_prices[0].td.text,
+                        'price_including_tax':fix_encoding(table_prices[3].td.text),
+                        'price_excluding_tax':fix_encoding(table_prices[2].td.text),
+                        'description':fix_encoding(bs_body.find_all('p')[3].text),
+                        'category':bredcrumb.find_all('li')[2].text.strip(),
+                        'review_rating':table_prices[6].td.text,
+                        'image_url':bs_body.find('img', alt=title).get('src'),
+                        'number_available':table_prices[5].td.text
                 })
+
 
     return page_dict
