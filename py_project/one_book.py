@@ -1,4 +1,4 @@
-import requests, sys
+import requests, sys, csv
 from bs4 import BeautifulSoup
 
 # Validatin the url
@@ -43,11 +43,12 @@ def scrap_one_book(given_url=None, get_image=False):
     bs_body = BeautifulSoup(response.text, 'html.parser').find('body')
     title = bs_body.find('h1').text
 
-    # updating the  dicionary just or just the imge
-    if get_image:
-        img_path = bs_body.find('img', alt=title).get('src')[5:]
-        return requests.get('https://books.toscrape.com'+img_path)
-
+    # updating the imge
+    img_path = bs_body.find('img', alt=title).get('src')[5:]
+    img_name = title.replace(' ','_').lower()
+    with open(f"{img_name}.jpg",'wb') as img:
+        book_img = requests.get('https://books.toscrape.com'+img_path)
+        img.write(book_img.content)
 
     table_prices = bs_body.find('table').find_all('tr')
     # Category
