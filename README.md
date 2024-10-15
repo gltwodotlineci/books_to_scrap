@@ -5,7 +5,7 @@ You can clone the project on your local folder by executing
 git@github.com:gltwodotlineci/books_to_scrap.git
 ```
 HTTPS:
-```http
+```bash
 https://github.com/gltwodotlineci/books_to_scrap.git
 ```
 
