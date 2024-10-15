@@ -29,7 +29,7 @@ def onebook(url):
     Creating csv file data of one book or download
     the image of one book
     '''
-    name_csv = url[37:-11]
+    name_csv = url[36:-11]
     create_csv(name_csv, scrap_one_book(url))
 
 @cli.command()

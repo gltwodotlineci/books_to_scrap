@@ -52,7 +52,7 @@ def scrap_one_book(given_url=None, category=False, all_categories=False):
 
     # updating the imge
     img_path = bs_body.find('img', alt=title).get('src')[5:]
-    img_name = title.replace(' ','_').lower()
+    img_name = title.replace(' ','_').replace('/','-').lower()
     folder = "one_book/"
     if category:
         folder ="category/"
