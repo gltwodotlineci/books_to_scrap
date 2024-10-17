@@ -9,15 +9,19 @@ def fix_encoding(str):
     return bytes(str, encoding="ISO-8859-1").decode('utf-8')
 
 
-# Validatin the url
 def valid_response(given_url):
+    '''
+    Validation of the url
+      '''
     try:
         return requests.get(given_url)
     except Exception:
         sys.exit("Be carefull the domain name is wrong! Please restart from the begining.")
 
 def scrap_one_book(given_url=None, category=False, all_categories=False):
-    
+    '''
+    Scraping the data of the choosen book
+    '''
     if given_url is not None:
         url = given_url
     else:

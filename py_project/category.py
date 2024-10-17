@@ -3,8 +3,11 @@ from bs4 import BeautifulSoup
 from  list_of_categories import send_category_list
 from one_book import scrap_one_book
 
-# choosing the category
+
 def choose_category():
+    '''
+    choosing the category
+    '''
     books_categ = send_category_list()
     print("Welcome to the category page. here you have the list of the categories that you can choose")
     print(f"You have the numbe of the category that you want to scrap")
@@ -23,6 +26,7 @@ def choose_category():
         i = i+1
     
     return categ_nb, books_categ[int(categ_nb)-1]
+
 
 def send_category_url(not_choosed_category):
     if not not_choosed_category:
@@ -61,15 +65,18 @@ def send_category_url(not_choosed_category):
         next_pages = checking_next_pages(BeautifulSoup(request_url_main.text, 'html.parser'))
         i = i+1
 
-    return category_url_list, category_dictionary['Name Category'], folder_path
+    return (category_url_list,
+            category_dictionary['Name Category'],
+            folder_path)
 
 
-# parsing from the categories page of the category
 def create_category_data(all_categories=None):
+    '''
+    parsing from the categories page of the category
+    '''
     base_url = "https://books.toscrape.com/catalogue"
     returned_categ = send_category_url(all_categories)
 
-    # field_names = ['url','title','upc','price_including_tax','price_excluding_tax','description','category','review_rating','image_url','number_available']
     field_names = []
     folder_path = "data/category/"
     category = True

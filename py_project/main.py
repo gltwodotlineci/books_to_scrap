@@ -1,15 +1,16 @@
-import sys, csv, click
+import csv, click
 from one_book import scrap_one_book
 from category import create_category_data
 from list_of_categories import send_category_list
 
 
 
-# Function that will be used to create a csv doc in order of the
 def create_csv(name_csv,book):
+    '''
+    Function that will be used to create a csv doc in order of the
+    '''
     # creating field names from keys
     field_names = [x for x in book]
-
     with open(f'data/one_book/{name_csv}.csv', 'w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_names)
         writer.writeheader()
@@ -32,8 +33,9 @@ def onebook(url):
     name_csv = url[36:-11]
     create_csv(name_csv, scrap_one_book(url))
 
+
 @cli.command()
-def createcategory():
+def create_category():
     '''
     Choosing one category and create csv file data
     from the choosen category

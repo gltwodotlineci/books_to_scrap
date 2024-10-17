@@ -24,12 +24,12 @@ cd py_project
 
 If you want to download the data of only one book. You have to copy the link of the book's page and add it to the next command
 ```bash
-pythonc main.py onebook copied_link
+python main.py onebook copied_link
 ```
 
 The command to download the books' data of one chosen category is
 ```bash
-pythonc main.py createcategory
+python main.py createcategory
 ```
 > After executing this command. You'll see on your terminal the list of the categories and their number. to choose one of the categories enter their number
 
