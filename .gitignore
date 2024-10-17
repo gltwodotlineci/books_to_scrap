@@ -4,5 +4,5 @@ __pycache__
 *.csv
 *.jpg
 *.zip
-lib
-lib64
+lib/
+lib64/
