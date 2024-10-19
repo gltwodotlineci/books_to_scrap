@@ -44,14 +44,15 @@ git clone git@github.com:gltwodotlineci/books_to_scrap.git
 git clone https://github.com/gltwodotlineci/books_to_scrap.git
 ```
 
-Creating the virtual envirenment
+Creating the virtual envirenment and installing dependences
 ```bash
 cd books_to_scrap
 python3 -m venv ./virtual_scrap_proj
 # Activating the virtual envirenment
 source ~/virtual_scrap_proj/bin/activate
+# installing libraries
+python3 -m pip install -r requirements.txt
 ```
-
 
 To enter to your sub folder of execution, you write
 ```bash
