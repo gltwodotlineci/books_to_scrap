@@ -25,7 +25,7 @@ def cli():
 
 @cli.command()
 @click.argument('url',nargs=1)
-def onebook(url):
+def one_book(url):
     '''
     Creating csv file data of one book or download
     the image of one book
@@ -35,16 +35,16 @@ def onebook(url):
 
 
 @cli.command()
-def create_category():
+def extract_category():
     '''
     Choosing one category and create csv file data
     from the choosen category
     '''
-    create_category_data(None)
+    create_category_data()
 
 
 @cli.command()
-def allcategories():
+def extract_all_categories():
     for i, categ in enumerate(send_category_list()):
         create_category_data((i+1,categ))
 

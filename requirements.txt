@@ -1,5 +1,4 @@
-pip==24.0
-bs4=0.0.2
-BeautifulSoup==4.12.3
+bs4
+beautifulSoup==4.12.3
 requests==2.32.3
 click==8.1.7

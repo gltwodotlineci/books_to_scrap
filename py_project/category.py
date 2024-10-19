@@ -29,12 +29,13 @@ def choose_category():
 
 
 def send_category_url(not_choosed_category):
+
+    folder_path = 'category'
     if not not_choosed_category:
         categ_lst = choose_category()
-        folder_path = ''
     else:
         categ_lst = not_choosed_category
-        folder_path = 'data/all_categories/'
+        folder_path = 'all_categories'
 
     categ_nb = categ_lst[0]
     category_dictionary = categ_lst[1]
@@ -78,14 +79,15 @@ def create_category_data(all_categories=None):
     returned_categ = send_category_url(all_categories)
 
     field_names = []
-    folder_path = "data/category/"
-    category = True
-    categories = False
-    if returned_categ[2] != '':
-        folder_path = returned_categ[2]
-        category = False
-        categories = True
-    with open(f'{folder_path}{returned_categ[1]}.csv', 'w', encoding='utf-8') as csv_file:
+    folder_path = returned_categ[2]
+    # folder_path = "data/category/"
+    # category = True
+    # categories = False
+    # if returned_categ[2] != '':
+    #     folder_path = returned_categ[2]
+    #     category = False
+    #     categories = True
+    with open(f'data/{folder_path}/{returned_categ[1]}.csv', 'w', encoding='utf-8') as csv_file:
 
         for categ_url in returned_categ[0]:
             # first we will create a list with the pages of each category
@@ -96,7 +98,7 @@ def create_category_data(all_categories=None):
             # we will create a list of each book from each page of each category
             for href in bs.find_all('h3'):
                 book_url = base_url + href.select('a')[0].get('href')[8:]
-                scraped_book = scrap_one_book(book_url, category,categories)
+                scraped_book = scrap_one_book(book_url, folder_path)
                 # Creating headers only if the field_name is void
                 if field_names == []:
                     field_names = [x for x in scraped_book]
