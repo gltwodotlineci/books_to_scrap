@@ -38,9 +38,9 @@ git@github.com:gltwodotlineci/books_to_scrap.git
 
 You can clone the project on your local folder by executing
 ```bash
-# SSH option
+# SSH
 git clone git@github.com:gltwodotlineci/books_to_scrap.git
-# Or HTTPS option
+# Or HTTPS
 git clone https://github.com/gltwodotlineci/books_to_scrap.git
 ```
 
@@ -73,5 +73,5 @@ python main.py extract-category
 
 The command to download books' data of each category is
 ```bash
-pythonc main.py extract-all-categories
+python3 main.py extract-all-categories
 ```
