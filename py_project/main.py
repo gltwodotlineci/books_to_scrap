@@ -2,7 +2,7 @@ import csv, click
 from one_book import scrap_one_book
 from category import create_category_data
 from list_of_categories import send_category_list
-
+from pathlib import Path
 
 
 def create_csv(name_csv,book):
@@ -30,7 +30,7 @@ def one_book(url):
     Creating csv file data of one book or download
     the image of one book
     '''
-    name_csv = url[36:-11]
+    name_csv = Path(url).parts[3]
     create_csv(name_csv, scrap_one_book(url))
 
 

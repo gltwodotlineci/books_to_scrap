@@ -2,6 +2,7 @@ import requests, sys, csv
 from bs4 import BeautifulSoup
 from  list_of_categories import send_category_list
 from one_book import scrap_one_book
+from pathlib import Path
 
 
 def choose_category():
@@ -80,14 +81,9 @@ def create_category_data(all_categories=None):
 
     field_names = []
     folder_path = returned_categ[2]
-    # folder_path = "data/category/"
-    # category = True
-    # categories = False
-    # if returned_categ[2] != '':
-    #     folder_path = returned_categ[2]
-    #     category = False
-    #     categories = True
-    with open(f'data/{folder_path}/{returned_categ[1]}.csv', 'w', encoding='utf-8') as csv_file:
+    name_csv = returned_categ[1] + '.csv'
+
+    with open(Path('data',folder_path,name_csv), 'w', encoding='utf-8') as csv_file:
 
         for categ_url in returned_categ[0]:
             # first we will create a list with the pages of each category
