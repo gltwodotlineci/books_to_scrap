@@ -47,11 +47,15 @@ def scrap_one_book(given_url, folder_path=None):
                     'review_rating':'',
                     'image_url':'',
                     'number_available':'',
+                    'star_rating':''
                 }
 
     # Updating the new data to the dictionary
     bs_body = BeautifulSoup(response.text, 'html.parser').find('body')
     title = bs_body.find('h1').text
+    # Geting the raiting stars
+    bs_star_rating = bs_body.find('div', class_="col-sm-6 product_main").find_all('p')[2]
+    star_rating = bs_star_rating.attrs['class'][1]
 
     # updating the imge
     img_path = bs_body.find('img', alt=title).get('src')[5:]
@@ -77,7 +81,8 @@ def scrap_one_book(given_url, folder_path=None):
                         'category':bredcrumb.find_all('li')[2].text.strip(),
                         'review_rating':table_prices[6].td.text,
                         'image_url':bs_body.find('img', alt=title).get('src'),
-                        'number_available':table_prices[5].td.text
+                        'number_available':table_prices[5].td.text,
+                        'star_rating':star_rating
                 })
 
     return page_dict
