@@ -18,7 +18,8 @@ def choose_category():
     print("Choose the number of your category!")
     categ_nb = input()
     i = 1
-    while not int(categ_nb) in range(0,51):
+    # Validate if the choice is between 1 to 50
+    while not categ_nb in [str(x) for x in range(0,51)]:
         if i > 2:
             sys.exit("Please start over")
 

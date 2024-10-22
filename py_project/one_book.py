@@ -12,29 +12,29 @@ def fix_encoding(str):
 def valid_response(given_url):
     '''
     Validation of the url
-      '''
+    '''
     try:
-        return requests.get(given_url)
+        return requests.get(given_url)      
     except Exception:
         sys.exit("Be carefull the domain name is wrong! Please restart from the begining.")
 
-def scrap_one_book(given_url=None, folder_path = None):
+
+def scrap_one_book(given_url, folder_path=None):
     '''
     Scraping the data of the choosen book
     '''
-    if given_url is not None:
-        url = given_url
-    else:
-        print("Entrez le lien de la page: ")
-        url = input()
+    url = given_url
+    response = valid_response(given_url)
 
-    response = valid_response(url)
-
+    i = 1
     while response.status_code != 200:
         print(" Please try again and check if your link has been copied correctly!")
         print(" Enter again your url here: ")
         url = input()
         response = valid_response(url)
+        i += 1
+        if i > 3:
+            sys.exit("To many errors, please start from the begining")
 
 
     page_dict = {'url': url,
@@ -47,8 +47,7 @@ def scrap_one_book(given_url=None, folder_path = None):
                     'review_rating':'',
                     'image_url':'',
                     'number_available':'',
-                    } 
-
+                }
 
     # Updating the new data to the dictionary
     bs_body = BeautifulSoup(response.text, 'html.parser').find('body')
@@ -66,6 +65,7 @@ def scrap_one_book(given_url=None, folder_path = None):
         img.write(book_img.content)
 
     table_prices = bs_body.find('table').find_all('tr')
+
     # Category
     bredcrumb = bs_body.find("ul")
 
@@ -79,6 +79,5 @@ def scrap_one_book(given_url=None, folder_path = None):
                         'image_url':bs_body.find('img', alt=title).get('src'),
                         'number_available':table_prices[5].td.text
                 })
-
 
     return page_dict
