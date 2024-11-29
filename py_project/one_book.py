@@ -55,7 +55,9 @@ def scrap_one_book(given_url, folder_path=None):
     title = bs_body.find('h1').text
     # Geting the raiting stars
     bs_star_rating = bs_body.find('div', class_="col-sm-6 product_main").find_all('p')[2]
-    star_rating = bs_star_rating.attrs['class'][1]
+    word_numbers ={'One':1,'Two':2,'Three':3, 'Four':4, 'Five':5}
+    given_word_number = bs_star_rating.attrs['class'][1]
+    star_rating = word_numbers.get(given_word_number)
 
     # updating the imge
     img_path = bs_body.find('img', alt=title).get('src')[5:]
